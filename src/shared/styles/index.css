@@ -1,0 +1,366 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* 🆕 Root 폰트 크기 (접근성 - 사용자 브라우저 설정 존중) */
+  html {
+    font-size: 100%;
+  }
+
+  body {
+    @apply bg-cream text-gray-900;
+    font-family: 'Pretendard', system-ui, -apple-system, sans-serif;
+
+    /* 🆕 안티앨리어싱 (폰트 렌더링 개선) */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* 🆕 버튼 브라우저 기본 스타일 완전 제거 */
+  button,
+  button *,
+  button::before,
+  button::after {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+  }
+
+  /* 모든 상태에서 outline 완전 제거 */
+  button,
+  button:focus,
+  button:active,
+  button:hover,
+  button:focus-within,
+  button:focus:not(:focus-visible) {
+    outline: 0 !important;
+    outline-width: 0 !important;
+    outline-style: none !important;
+    outline-color: transparent !important;
+    outline-offset: 0 !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  /* Focus-visible만 예외 (키보드 접근성) */
+  button:focus-visible {
+    outline: 2px solid theme('colors.coral-pink') !important;
+    outline-offset: 2px;
+  }
+
+  /* 🆕 선택 영역 스타일 (브랜드 컬러) */
+  ::selection {
+    background-color: theme('colors.primary.200');
+    color: theme('colors.gray.900');
+  }
+
+  /* 🆕 iOS Safari 자동 줌 방지 (2025 Best Practice) */
+  /* 16px 미만 폰트 사이즈 사용 시 Safari가 자동으로 줌인하는 것을 방지 */
+  input,
+  textarea,
+  select {
+    font-size: max(16px, 1rem);
+  }
+
+  /* 특정 케이스: 명시적으로 작은 폰트가 필요한 경우 (예: 검색 아이콘 옆 placeholder) */
+  /* 이런 경우 인라인 style={{ fontSize: '16px' }}로 개별 지정 권장 */
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-honey-gold hover:bg-yellow-400 text-gray-900 font-semibold px-6 py-3 rounded-full transition-all duration-200 shadow-lg hover:shadow-xl min-h-touch;
+  }
+
+  .btn-kakao {
+    @apply bg-[#FEE500] hover:bg-[#FDD800] text-gray-900 font-semibold px-6 py-3 rounded-full transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 min-h-touch;
+  }
+}
+
+@layer utilities {
+  .animate-modal-in {
+    animation: modalIn 0.2s ease-out;
+  }
+
+  @keyframes modalIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  /* 🆕 Fade-in animation (실수 터치 방지) */
+  .animate-fade-in {
+    animation: fadeIn 0.15s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* 🆕 Bell ring animation with explicit transform-origin */
+  .animate-bell-ring-safe {
+    animation: bellRingSafe 1s cubic-bezier(0.36, 0, 0.66, -0.56) 5 !important;
+    animation-fill-mode: forwards !important;
+    transform-origin: top center !important;
+    will-change: transform;
+  }
+
+  /* 🔧 모바일 Reduce Motion 무시 (강제 애니메이션) */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-bell-ring-safe {
+      animation: bellRingSafe 1s cubic-bezier(0.36, 0, 0.66, -0.56) 5 !important;
+      animation-fill-mode: forwards !important;
+    }
+  }
+
+  @keyframes bellRingSafe {
+    0% {
+      transform: rotate(0deg);
+    }
+    15% {
+      transform: rotate(-10deg);
+    }
+    30% {
+      transform: rotate(10deg);
+    }
+    45% {
+      transform: rotate(-8deg);
+    }
+    60% {
+      transform: rotate(8deg);
+    }
+    75% {
+      transform: rotate(-5deg);
+    }
+    85% {
+      transform: rotate(5deg);
+    }
+    95% {
+      transform: rotate(-2deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  /* 🆕 모던 Viewport 단위 (2025) - 모바일 주소창 대응 */
+  .h-screen-dynamic {
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .h-screen-small {
+    height: 100vh;
+    height: 100svh;
+  }
+
+  .h-screen-large {
+    height: 100vh;
+    height: 100lvh;
+  }
+
+  .min-h-screen-dynamic {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .min-h-screen-small {
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  /* 🆕 Safe Area 유틸리티 (iOS Notch, Android Gesture Bar) */
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .pl-safe {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .pr-safe {
+    padding-right: env(safe-area-inset-right);
+  }
+
+  .p-safe {
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+
+  .mt-safe {
+    margin-top: env(safe-area-inset-top);
+  }
+
+  .mb-safe {
+    margin-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* 🆕 Touch Target 최소 크기 (WCAG 2.5.8) */
+  .min-h-touch {
+    min-height: 44px;
+  }
+
+  .min-h-touch-lg {
+    min-height: 48px;
+  }
+
+  .min-w-touch {
+    min-width: 44px;
+  }
+
+  .min-w-touch-lg {
+    min-width: 48px;
+  }
+
+  /* 🆕 수평 스크롤 (2025 Clean Approach) */
+  .scroll-fade-right {
+    scroll-padding-right: 20px; /* 가장자리와 콘텐츠 사이 자연스러운 공간 */
+    padding-right: 20px; /* 마지막 아이템이 화면 끝에서 떨어지도록 */
+  }
+
+  /* 접근성: 애니메이션 선호도 존중 (2025) */
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-fade-right {
+      scroll-behavior: auto;
+    }
+  }
+
+  /* 🆕 Elegant Pill Buttons with Border (2025) */
+  .pill-tab {
+    background: rgba(249, 250, 251, 0.9) !important;
+    border: 1.5px solid rgba(209, 213, 219, 0.6) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    outline: 0 !important;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .pill-tab:hover {
+    background: rgba(255, 255, 255, 1) !important;
+    border: 1.5px solid rgba(209, 213, 219, 0.8) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+    outline: 0 !important;
+  }
+
+  .pill-tab:active {
+    background: rgba(255, 255, 255, 1) !important;
+    border: 1.5px solid rgba(209, 213, 219, 0.9) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+    outline: 0 !important;
+    transform: scale(0.98);
+  }
+
+  .pill-tab-active {
+    background: linear-gradient(135deg, #FF5864 0%, #FD297B 100%) !important;
+    border: 1.5px solid rgba(255, 88, 100, 0.4) !important;
+    box-shadow: 0 2px 8px rgba(255, 88, 100, 0.25) !important;
+    outline: 0 !important;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .pill-tab-active:hover {
+    background: linear-gradient(135deg, #FF6B75 0%, #FD3A8C 100%) !important;
+    border: 1.5px solid rgba(255, 88, 100, 0.5) !important;
+    box-shadow: 0 4px 12px rgba(255, 88, 100, 0.3) !important;
+    outline: 0 !important;
+  }
+
+  .pill-tab-active:active {
+    background: linear-gradient(135deg, #FF5864 0%, #FD297B 100%) !important;
+    border: 1.5px solid rgba(255, 88, 100, 0.5) !important;
+    box-shadow: 0 1px 4px rgba(255, 88, 100, 0.2) !important;
+    outline: 0 !important;
+    transform: scale(0.98);
+  }
+
+  /* 모든 상태에서 브라우저 기본 outline 완전 제거 */
+  .pill-tab,
+  .pill-tab:focus,
+  .pill-tab:active,
+  .pill-tab:focus-within,
+  .pill-tab-active,
+  .pill-tab-active:focus,
+  .pill-tab-active:active,
+  .pill-tab-active:focus-within {
+    outline: 0 !important;
+    outline-width: 0 !important;
+    outline-style: none !important;
+    outline-offset: 0 !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  /* 스크롤바 숨기기 */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Smooth scroll */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+
+  /* 🆕 2025 반응형 타이포그래피 */
+  .text-wrap-balance {
+    text-wrap: balance;
+  }
+
+  .text-wrap-pretty {
+    text-wrap: pretty;
+  }
+
+  /* 한글 최적화 줄바꿈 */
+  .word-break-keep-all {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  /* 🆕 Lexical Mention Block (YouTube 스타일) */
+  .mention {
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 0 2px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.15) 100%);
+    color: rgb(29, 78, 216);
+    border-radius: 9999px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* 호버 시 강조 */
+  .mention:hover {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.2) 100%);
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.25);
+  }
+
+  /* 선택 시 강조 (1번 백스페이스) */
+  .mention.selected {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(37, 99, 235, 0.3) 100%);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+  }
+
+  /* 2번 백스페이스 → 전체 삭제 (Lexical이 자동 처리) */
+}
