@@ -186,7 +186,7 @@ export function PostCreatePage() {
             <input
               type="file"
               id="image-upload"
-              accept="image/jpeg,image/png,image/webp"
+              accept="image/jpeg,image/png,image/gif,image/webp"
               onChange={handleImageChange}
               className="hidden"
             />

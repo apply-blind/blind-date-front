@@ -199,8 +199,7 @@ export function PostDetailPage() {
         if (import.meta.env.DEV) {
           console.log('[PostDetailPage] COMMENT_ADDED 알림 수신 - 댓글 목록 갱신:', {
             postPublicId: notification.postPublicId,
-            commentPublicId: notification.commentPublicId,
-            nickname: notification.anonymousNickname
+            commentPublicId: notification.commentPublicId
           })
         }
 

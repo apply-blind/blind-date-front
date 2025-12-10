@@ -253,8 +253,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (import.meta.env.DEV) {
         console.log('[알림] 댓글 추가됨 (브로드캐스트):', {
           postPublicId: notification.postPublicId,
-          commentPublicId: notification.commentPublicId,
-          nickname: notification.anonymousNickname
+          commentPublicId: notification.commentPublicId
         })
       }
       setLatestNotification(notification)

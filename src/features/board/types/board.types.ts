@@ -12,7 +12,7 @@ export type PostCategory =
 /**
  * 이미지 Content-Type (백엔드 ImageContentType enum)
  */
-export type ImageContentType = 'image/jpeg' | 'image/png' | 'image/webp'
+export type ImageContentType = 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp'
 
 /**
  * 게시글 상태

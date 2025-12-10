@@ -26,7 +26,7 @@ function ProfileCreatePage() {
     return savedData || {
       nickname: '',
       gender: '',
-      birthDate: '',
+      birthday: '',
       occupation: '',
       company: '',
       school: '',
@@ -376,7 +376,7 @@ function ProfileCreatePage() {
     formData.nickname &&
     nicknameCheckStatus === 'available' &&
     formData.gender &&
-    formData.birthDate &&
+    formData.birthday &&
     formData.occupation &&
     formData.company &&
     formData.school &&
@@ -554,8 +554,8 @@ function ProfileCreatePage() {
 
           {/* 3. 생일 */}
           <BirthDateSelector
-            value={formData.birthDate}
-            onChange={(birthDate) => setFormData(prev => ({ ...prev, birthDate }))}
+            value={formData.birthday}
+            onChange={(birthday) => setFormData(prev => ({ ...prev, birthday }))}
             required
           />
 

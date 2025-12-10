@@ -2,7 +2,7 @@
 export interface ProfileFormData {
   nickname: string                      // 닉네임 (중복확인 필요)
   gender: 'MALE' | 'FEMALE' | ''       // 성별 (빈 문자열은 미선택 상태)
-  birthDate: string                     // 생일 (YYYY-MM-DD 형식, 예: 1995-08-29)
+  birthday: string                      // 생일 (YYYY-MM-DD 형식, 예: 1995-08-29)
   occupation: string                    // 직업 (대분류/소분류 형식, 예: "일반/대기업직원")
   company: string                       // 직장 (한글만, 띄어쓰기 없이, 최대 250자)
   school: string                        // 학교
@@ -91,9 +91,10 @@ export interface ImageUpdateMetadata {
 
 /**
  * Presigned URL 정보 (응답)
+ * 백엔드는 항상 imagePublicId를 생성하여 제공
  */
 export interface PresignedUrlInfo {
-  imagePublicId?: string     // 프로필 수정 시에만 포함
+  imagePublicId: string      // 서버가 생성한 UUID (항상 포함)
   presignedUrl: string
   s3Key: string
   displayOrder: number

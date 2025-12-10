@@ -90,15 +90,13 @@ export interface ReplyCreatedNotification extends BaseNotification {
 /**
  * 댓글 추가 알림 (브로드캐스트)
  * - 댓글/대댓글 작성 시 게시글을 보고 있는 모든 사용자에게 알림
- * - 실시간 댓글 목록 업데이트용
+ * - 실시간 댓글 목록 업데이트용 (트리거 역할, 실제 데이터는 API로 재조회)
  */
 export interface CommentAddedNotification extends BaseNotification {
   type: 'COMMENT_ADDED'
   userPublicId: null          // 브로드캐스트 알림
   postPublicId: string        // 해당 게시글 식별용
   commentPublicId: string     // 추가된 댓글 ID
-  anonymousNickname: string   // 댓글 작성자 익명 닉네임
-  content: string             // 댓글 내용
 }
 
 /**

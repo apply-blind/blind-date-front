@@ -194,7 +194,7 @@ export function convertToBackendRequest(
   return {
     nickname: profileData.nickname,
     gender: gender,  // ✅ 타입 단언 제거
-    birthday: profileData.birthDate,  // 이미 YYYY-MM-DD 형식
+    birthday: profileData.birthday,  // 이미 YYYY-MM-DD 형식
     jobCategory: JOB_CATEGORY_MAP[jobCategoryKorean] || jobCategoryKorean,
     jobTitle: jobTitle,
     company: profileData.company,
@@ -279,7 +279,7 @@ export function convertToFrontendForm(
   return {
     nickname: backendData.nickname,
     gender: backendData.gender,
-    birthDate: backendData.birthday,
+    birthday: backendData.birthday,
     occupation: occupation,
     company: backendData.company,
     school: backendData.school,
