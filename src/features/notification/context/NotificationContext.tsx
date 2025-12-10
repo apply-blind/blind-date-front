@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 import type { NotificationDto } from '../types'
+import type { CurrentUser } from '@/features/auth/types/auth.types'
 import { getUnreadCount } from '../api/notification.api'
-import { useAuth } from '@/features/auth'
 
 interface NotificationContextType {
   latestNotification: NotificationDto | null
@@ -13,8 +13,12 @@ interface NotificationContextType {
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined)
 
-export function NotificationProvider({ children }: { children: ReactNode }) {
-  const { user } = useAuth()
+interface NotificationProviderProps {
+  children: ReactNode
+  user: CurrentUser | null
+}
+
+export function NotificationProvider({ children, user }: NotificationProviderProps) {
   const [latestNotification, setLatestNotification] = useState<NotificationDto | null>(null)
   const [unreadCount, setUnreadCount] = useState<number>(0)
 

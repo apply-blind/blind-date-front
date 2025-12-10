@@ -3,7 +3,7 @@ import axios from 'axios'
 import { getCurrentUser } from '../api/authApi'
 import type { CurrentUser } from '../types/auth.types'
 import { useNotificationStream } from '@/features/notification/hooks/useNotificationStream'
-import { useNotification } from '@/features/notification/context/NotificationContext'
+import { useNotification, NotificationProvider } from '@/features/notification/context/NotificationContext'
 import type { NotificationDto } from '@/features/notification/types'
 
 interface AuthContextType {
@@ -337,7 +337,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     clearRefreshFailed
   }
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={value}>
+      <NotificationProvider user={user}>
+        {children}
+      </NotificationProvider>
+    </AuthContext.Provider>
+  )
 }
 
 export function useAuth() {
