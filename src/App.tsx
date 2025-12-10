@@ -44,8 +44,8 @@ function App() {
 
         {/* 일반 사용자 라우트 (AuthProvider + NotificationProvider 적용) */}
         <Route path="/*" element={
-          <AuthProvider>
-            <NotificationProvider>
+          <NotificationProvider>
+            <AuthProvider>
               <Routes>
               {/* 공개 라우트 (인증 불필요) */}
               <Route path="/" element={<LandingPage />} />
@@ -167,8 +167,8 @@ function App() {
                 }
               />
               </Routes>
-            </NotificationProvider>
-          </AuthProvider>
+            </AuthProvider>
+          </NotificationProvider>
         } />
       </Routes>
     </Suspense>
