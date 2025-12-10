@@ -42,10 +42,10 @@ function App() {
         {/* ⭐ 관리자 라우트 (AuthProvider와 완전 분리) */}
         <Route path="/admin/*" element={<AdminRoutes />} />
 
-        {/* 일반 사용자 라우트 (NotificationProvider + AuthProvider 적용) */}
+        {/* 일반 사용자 라우트 (AuthProvider + NotificationProvider 적용) */}
         <Route path="/*" element={
-          <NotificationProvider>
-            <AuthProvider>
+          <AuthProvider>
+            <NotificationProvider>
               <Routes>
               {/* 공개 라우트 (인증 불필요) */}
               <Route path="/" element={<LandingPage />} />
@@ -167,8 +167,8 @@ function App() {
                 }
               />
               </Routes>
-            </AuthProvider>
-          </NotificationProvider>
+            </NotificationProvider>
+          </AuthProvider>
         } />
       </Routes>
     </Suspense>

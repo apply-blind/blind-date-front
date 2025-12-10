@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 import type { NotificationDto } from '../types'
 import { getUnreadCount } from '../api/notification.api'
+import { useAuth } from '@/features/auth'
 
 interface NotificationContextType {
   latestNotification: NotificationDto | null
@@ -13,11 +14,20 @@ interface NotificationContextType {
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined)
 
 export function NotificationProvider({ children }: { children: ReactNode }) {
+  const { user } = useAuth()
   const [latestNotification, setLatestNotification] = useState<NotificationDto | null>(null)
   const [unreadCount, setUnreadCount] = useState<number>(0)
 
   // 읽지 않은 알림 개수 조회
   const refreshUnreadCount = async () => {
+    // APPROVED 사용자만 조회 (UNDER_REVIEW 등은 403 에러 방지)
+    if (user?.status !== 'APPROVED') {
+      if (import.meta.env.DEV) {
+        console.log('[NotificationContext] APPROVED 사용자가 아니므로 unread-count API 호출 스킵:', user?.status)
+      }
+      return
+    }
+
     try {
       const count = await getUnreadCount()
       setUnreadCount(count)
@@ -43,10 +53,12 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     })
   }
 
-  // 초기 로드 시 읽지 않은 알림 개수 조회
+  // user.status가 APPROVED로 변경될 때 읽지 않은 알림 개수 조회
   useEffect(() => {
-    refreshUnreadCount()
-  }, [])
+    if (user?.status === 'APPROVED') {
+      refreshUnreadCount()
+    }
+  }, [user?.status])
 
   return (
     <NotificationContext.Provider
