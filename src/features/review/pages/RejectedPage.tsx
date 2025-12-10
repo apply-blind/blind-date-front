@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/features/auth'
+import sadFace from '@/assets/images/sad_face.png'
 
 function RejectedPage() {
   const navigate = useNavigate()
@@ -16,7 +17,7 @@ function RejectedPage() {
           {/* 거절 아이콘 */}
           <div className="flex justify-center">
             <img
-              src="/src/assets/images/sad_face.png"
+              src={sadFace}
               alt="반려된 프로필"
               className="w-24 h-24 object-contain"
             />
