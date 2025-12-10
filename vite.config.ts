@@ -9,26 +9,15 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'Blind',
+        name: 'Blind - 진심으로 만나는 특별한 인연',
         short_name: 'Blind',
-        description: '블라인드 데이팅 애플리케이션',
-        theme_color: '#FFB4A2',
+        description: '신뢰할 수 있는 프리미엄 블라인드 데이팅 애플리케이션',
+        theme_color: '#FF5864',
         background_color: '#FFF8F0',
         display: 'standalone',
-        icons: [
-          {
-            src: 'pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          }
-        ]
+        orientation: 'portrait-primary',
+        lang: 'ko'
       }
     })
   ],
@@ -56,7 +45,7 @@ export default defineConfig({
           proxy.on('error', (err, _req, _res) => {
             console.log('[Vite Proxy] Error:', err)
           })
-          proxy.on('proxyReq', (proxyReq, req, _res) => {
+          proxy.on('proxyReq', (_proxyReq, req, _res) => {
             console.log('[Vite Proxy]', req.method, req.url)
           })
         },
