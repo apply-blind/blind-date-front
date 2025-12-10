@@ -29,8 +29,9 @@ function KakaoCallback() {
   const hasCalledApi = useRef<boolean>(false)  // ⭐ 중복 호출 방지 (React Strict Mode 대응)
 
   const addLog = (message: string) => {
-    setDebugLog(prev => [...prev, `[${new Date().toLocaleTimeString()}] ${message}`])
+    // 개발 환경에서만 로그 저장 및 출력
     if (import.meta.env.DEV) {
+      setDebugLog(prev => [...prev, `[${new Date().toLocaleTimeString()}] ${message}`])
       console.log(message)
     }
   }
@@ -198,15 +199,17 @@ function KakaoCallback() {
         <h2 className="text-2xl font-bold mb-2 text-gray-900">로그인 처리 중</h2>
         <p className="text-gray-500 mb-6">잠시만 기다려주세요</p>
 
-        {/* 디버그 로그 표시 */}
-        <div className="mt-8 bg-gray-50 rounded-lg p-4 text-left max-h-64 overflow-y-auto">
-          <h3 className="text-sm font-bold text-gray-700 mb-2">로그:</h3>
-          {debugLog.map((log, index) => (
-            <p key={index} className="text-xs text-gray-600 font-mono mb-1">
-              {log}
-            </p>
-          ))}
-        </div>
+        {/* 디버그 로그 표시 (개발 환경에서만) */}
+        {import.meta.env.DEV && (
+          <div className="mt-8 bg-gray-50 rounded-lg p-4 text-left max-h-64 overflow-y-auto">
+            <h3 className="text-sm font-bold text-gray-700 mb-2">로그:</h3>
+            {debugLog.map((log, index) => (
+              <p key={index} className="text-xs text-gray-600 font-mono mb-1">
+                {log}
+              </p>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
