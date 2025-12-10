@@ -1,6 +1,5 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
+import { createContext, useContext, useState, type ReactNode } from 'react'
 import type { NotificationDto } from '../types'
-import type { CurrentUser } from '@/features/auth/types/auth.types'
 import { getUnreadCount } from '../api/notification.api'
 
 interface NotificationContextType {
@@ -13,31 +12,20 @@ interface NotificationContextType {
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined)
 
-interface NotificationProviderProps {
-  children: ReactNode
-  user: CurrentUser | null
-}
-
-export function NotificationProvider({ children, user }: NotificationProviderProps) {
+export function NotificationProvider({ children }: { children: ReactNode }) {
   const [latestNotification, setLatestNotification] = useState<NotificationDto | null>(null)
   const [unreadCount, setUnreadCount] = useState<number>(0)
 
   // 읽지 않은 알림 개수 조회
+  // 백엔드가 @CurrentApprovedUser로 보호하므로, 403 에러는 조용히 무시
   const refreshUnreadCount = async () => {
-    // APPROVED 사용자만 조회 (UNDER_REVIEW 등은 403 에러 방지)
-    if (user?.status !== 'APPROVED') {
-      if (import.meta.env.DEV) {
-        console.log('[NotificationContext] APPROVED 사용자가 아니므로 unread-count API 호출 스킵:', user?.status)
-      }
-      return
-    }
-
     try {
       const count = await getUnreadCount()
       setUnreadCount(count)
     } catch (error) {
+      // APPROVED가 아닌 경우 403 에러 - 조용히 무시
       if (import.meta.env.DEV) {
-        console.error('읽지 않은 알림 개수 조회 실패:', error)
+        console.log('[NotificationContext] unread-count 조회 실패 (403 - APPROVED 아님)')
       }
     }
   }
@@ -56,13 +44,6 @@ export function NotificationProvider({ children, user }: NotificationProviderPro
       return newCount
     })
   }
-
-  // user.status가 APPROVED로 변경될 때 읽지 않은 알림 개수 조회
-  useEffect(() => {
-    if (user?.status === 'APPROVED') {
-      refreshUnreadCount()
-    }
-  }, [user?.status])
 
   return (
     <NotificationContext.Provider

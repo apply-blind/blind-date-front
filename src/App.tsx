@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import { AuthProvider } from '@/features/auth'
+import { NotificationProvider } from '@/features/notification/context/NotificationContext'
 import { AdminRoutes } from '@/features/admin/routes/AdminRoutes'
 import { ProtectedRoute } from '@/shared/components/layout/ProtectedRoute'
 import KakaoCallback from '@/features/auth/components/KakaoCallback'
@@ -41,10 +42,11 @@ function App() {
         {/* ⭐ 관리자 라우트 (AuthProvider와 완전 분리) */}
         <Route path="/admin/*" element={<AdminRoutes />} />
 
-        {/* 일반 사용자 라우트 (AuthProvider 적용, NotificationProvider는 내부에서 자동 적용) */}
+        {/* 일반 사용자 라우트 (NotificationProvider → AuthProvider 계층) */}
         <Route path="/*" element={
-          <AuthProvider>
-            <Routes>
+          <NotificationProvider>
+            <AuthProvider>
+              <Routes>
               {/* 공개 라우트 (인증 불필요) */}
               <Route path="/" element={<LandingPage />} />
               <Route path="/auth/kakao/callback" element={<KakaoCallback />} />
@@ -165,7 +167,8 @@ function App() {
                 }
               />
             </Routes>
-          </AuthProvider>
+            </AuthProvider>
+          </NotificationProvider>
         } />
       </Routes>
     </Suspense>
